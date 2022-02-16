@@ -3,16 +3,17 @@ locals {
   instance_count = local.enabled ? 1 : 0
   volume_count   = var.ebs_volume_count > 0 && local.instance_count > 0 ? var.ebs_volume_count : 0
   # create an instance profile if the instance is enabled and we aren't given one to use
-  instance_profile_count = module.this.enabled ? (length(var.instance_profile) > 0 ? 0 : 1) : 0
-  instance_profile       = local.instance_profile_count == 0 ? var.instance_profile : join("", aws_iam_instance_profile.default.*.name)
-  security_group_enabled = module.this.enabled && var.security_group_enabled
-  region                 = var.region != "" ? var.region : data.aws_region.default.name
-  root_iops              = var.root_volume_type == "io1" ? var.root_iops : "0"
-  ebs_iops               = var.ebs_volume_type == "io1" ? var.ebs_iops : "0"
-  availability_zone      = var.availability_zone != "" ? var.availability_zone : data.aws_subnet.default.availability_zone
-  ami                    = var.ami != "" ? var.ami : join("", data.aws_ami.default.*.image_id)
-  ami_owner              = var.ami != "" ? var.ami_owner : join("", data.aws_ami.default.*.owner_id)
-  root_volume_type       = var.root_volume_type != "" ? var.root_volume_type : data.aws_ami.info.root_device_type
+  instance_profile_count   = module.this.enabled ? (length(var.instance_profile) > 0 ? 0 : 1) : 0
+  instance_profile         = local.instance_profile_count == 0 ? var.instance_profile : join("", aws_iam_instance_profile.default.*.name)
+  security_group_enabled   = module.this.enabled && var.security_group_enabled
+  region                   = var.region != "" ? var.region : data.aws_region.default.name
+  root_iops                = var.root_volume_type == "io1" ? var.root_iops : "0"
+  ebs_iops                 = var.ebs_volume_type == "io1" ? var.ebs_iops : "0"
+  availability_zone        = var.availability_zone != "" ? var.availability_zone : data.aws_subnet.default.availability_zone
+  ami                      = var.ami != "" ? var.ami : join("", data.aws_ami.default.*.image_id)
+  ami_owner                = var.ami != "" ? var.ami_owner : join("", data.aws_ami.default.*.owner_id)
+  root_volume_type         = var.root_volume_type != "" ? var.root_volume_type : data.aws_ami.info.root_device_type
+  cloudwatch_alarm_enabled = var.cloudwatch_alarm_enabled && local.enabled
 
   region_domain  = local.region == "us-east-1" ? "compute-1.amazonaws.com" : "${local.region}.compute.amazonaws.com"
   eip_public_dns = "ec2-${replace(join("", aws_eip.default.*.public_ip), ".", "-")}.${local.region_domain}"
