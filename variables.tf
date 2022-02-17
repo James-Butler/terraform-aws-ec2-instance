@@ -344,10 +344,3 @@ variable "ssm_patch_manager_s3_log_bucket" {
   default     = null
   description = "The name of the s3 bucket to export the patch log to"
 }
-
-variable "cloudwatch_alarm_enabled" {
-  type        = string
-  default     = false
-  description = "Enable cloudwatch alarming"
-}
-
