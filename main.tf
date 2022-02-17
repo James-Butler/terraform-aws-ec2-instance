@@ -13,6 +13,7 @@ locals {
   ami                             = var.ami != "" ? var.ami : join("", data.aws_ami.default.*.image_id)
   ami_owner                       = var.ami != "" ? var.ami_owner : join("", data.aws_ami.default.*.owner_id)
   root_volume_type                = var.root_volume_type != "" ? var.root_volume_type : data.aws_ami.info.root_device_type
+  default_alarm_action            = var.default_alarm_action == null ? "": var.default_alarm_action
   cloudwatch_alarm_action_enabled = var.default_alarm_action == null && local.enabled ? true : false
 
   region_domain  = local.region == "us-east-1" ? "compute-1.amazonaws.com" : "${local.region}.compute.amazonaws.com"

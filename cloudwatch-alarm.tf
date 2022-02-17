@@ -4,7 +4,7 @@ resource "null_resource" "check_alarm_action" {
   count = local.cloudwatch_alarm_action_enabled ? 1 : 0
 
   triggers = {
-    action = "arn:${data.aws_partition.default.partition}:swf:${local.region}:${data.aws_caller_identity.default.account_id}:${var.default_alarm_action}"
+    action = "arn:${data.aws_partition.default.partition}:swf:${local.region}:${data.aws_caller_identity.default.account_id}:${local.default_alarm_action}"
   }
 }
 
